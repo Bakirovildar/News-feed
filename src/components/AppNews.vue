@@ -15,7 +15,16 @@
 <script>
 export default {
   // props: ['title'],
-  emits: ['open-news'],
+  emits: {
+    'open-news': null,
+    'on-read'(id) {
+      if (id) {
+        return true
+      }
+      console.warn('Нет параметра id у on-read')
+      return false
+    }
+  },
   props: {
     title: String,
     id: Number,
