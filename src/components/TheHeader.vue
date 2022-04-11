@@ -11,6 +11,7 @@
       :wasRead="item.wasRead"
       @open-news="countRate"
       @on-read="onRead"
+      @unmark="unReadNews"
   />
 </template>
 
@@ -52,6 +53,11 @@ export default {
     onRead(id) {
       this.news.map(i => i.id === id ? i.wasRead = true : '')
       this.openRead++
+    },
+    unReadNews(id) {
+      const news = this.news.find(i => i.id === id)
+      news.wasRead = false
+      this.openRead--
     }
   }
 }

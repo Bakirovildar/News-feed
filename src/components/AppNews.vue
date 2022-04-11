@@ -3,11 +3,15 @@
       class="card"
   >
     <h3>{{ title }}</h3>
-    <button class="btn" @click="openNews">{{isNewOpen ? 'Закрыть' : 'Открыть'}}</button>
+    <div style="display: flex; justify-content: center">
+      <button class="btn" @click="openNews">{{ isNewOpen ? 'Закрыть' : 'Открыть' }}</button>
+      <button class="btn danger" v-if="wasRead" @click="$emit('unmark', id)">Отметить непрочитанной</button>
+    </div>
+
     <div v-if="isNewOpen">
       <p>{{ body }}</p>
       <hr>
-      <button v-if="!wasRead" class="btn primary" @click="onRead">Прочесть новость</button>
+      <button v-if="!wasRead" class="btn primary" @click="$emit('on-read', id)">Прочесть новость</button>
     </div>
   </div>
 </template>
@@ -22,6 +26,13 @@ export default {
         return true
       }
       console.warn('Нет параметра id у on-read')
+      return false
+    },
+    unmark(id) {
+      if (id) {
+        return true
+      }
+      console.warn('unmark что то не то')
       return false
     }
   },
@@ -41,9 +52,6 @@ export default {
     openNews() {
       this.isNewOpen = !this.isNewOpen
       this.isNewOpen ? this.$emit('open-news', this.title) : ''
-    },
-    onRead() {
-      this.$emit('on-read', this.id)
     }
   }
 }
@@ -67,6 +75,10 @@ export default {
   background: #2c3e50;
   color: white;
   cursor: pointer;
+}
+
+.danger {
+  background: rosybrown;
 }
 
 .primary {
