@@ -4,18 +4,24 @@
   >
     <h3>{{ title }}</h3>
     <button class="btn" @click="openNews">{{isNewOpen ? 'Закрыть' : 'Открыть'}}</button>
-    <p v-if="isNewOpen">{{ body }}</p>
+    <div v-if="isNewOpen">
+      <p>{{ body }}</p>
+      <hr>
+      <button v-if="!wasRead" class="btn primary" @click="onRead">Прочесть новость</button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   // props: ['title'],
+  emits: ['open-news'],
   props: {
     title: String,
     id: Number,
     body: String,
-    isOpen: Boolean
+    isOpen: Boolean,
+    wasRead: Boolean
   },
   data() {
     return {
@@ -25,7 +31,10 @@ export default {
   methods: {
     openNews() {
       this.isNewOpen = !this.isNewOpen
-      this.isNewOpen ? this.$emit('open-news') : ''
+      this.isNewOpen ? this.$emit('open-news', this.title) : ''
+    },
+    onRead() {
+      this.$emit('on-read', this.id)
     }
   }
 }
@@ -49,5 +58,10 @@ export default {
   background: #2c3e50;
   color: white;
   cursor: pointer;
+}
+
+.primary {
+  background: lavender;
+  color: black;
 }
 </style>
